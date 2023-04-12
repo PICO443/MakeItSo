@@ -12,20 +12,25 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.pico.make_it_so.presentation._common.EmailTextField
 import com.pico.make_it_so.presentation._common.PasswordTextField
+import com.pico.make_it_so.presentation._nav_graphs.AuthNavGraph
+import com.pico.make_it_so.presentation.destinations.HomeScreenDestination
 import com.pico.make_it_so.presentation.sign_up.components.SignUpTopAppBar
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @OptIn(ExperimentalMaterial3Api::class)
+@AuthNavGraph(start = true)
+@Destination
 @Composable
 fun SignUpScreen(
     viewModel: SignUpViewModel = hiltViewModel(),
-    navigateBack: () -> Unit,
-    navigateToHome: () -> Unit
+    navigator: DestinationsNavigator
 ) {
     val uiState = viewModel.uiState
 
     Scaffold(
         topBar = {
-            SignUpTopAppBar(navigateBack)
+            SignUpTopAppBar(navigateBack = { navigator.navigateUp() })
         }
     ) { paddingValues ->
         Column(
@@ -51,7 +56,7 @@ fun SignUpScreen(
                 placeholder = "Repeat Password"
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = { viewModel.onEvent(SignUpEvent.SignUp); navigateToHome() }) {
+            Button(onClick = { viewModel.onEvent(SignUpEvent.SignUp); navigator.navigate(HomeScreenDestination) }) {
                 Text(text = "Sign Up")
             }
         }

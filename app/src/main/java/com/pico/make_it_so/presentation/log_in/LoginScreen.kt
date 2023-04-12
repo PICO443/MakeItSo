@@ -12,19 +12,24 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.pico.make_it_so.presentation._common.EmailTextField
 import com.pico.make_it_so.presentation._common.PasswordTextField
+import com.pico.make_it_so.presentation._nav_graphs.AuthNavGraph
+import com.pico.make_it_so.presentation.destinations.HomeScreenDestination
 import com.pico.make_it_so.presentation.log_in.components.LoginTopAppBar
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @OptIn(ExperimentalMaterial3Api::class)
+@AuthNavGraph
+@Destination
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel(),
-    navigateBack: () -> Unit,
-    navigateToHome: () -> Unit
+    navigator: DestinationsNavigator
 ) {
     val uiState = viewModel.uiState
     Scaffold(
         topBar = {
-            LoginTopAppBar(navigateBack)
+            LoginTopAppBar(onNavigateBack = {navigator.navigateUp()})
         }
     ) { paddingValues ->
         Column(
@@ -41,7 +46,7 @@ fun LoginScreen(
                 value = uiState.password,
                 onValueChange = { viewModel.onEvent(LoginEvent.OnPasswordChange(it)) })
             Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = { viewModel.onEvent(LoginEvent.Login(onSuccessLogin = { navigateToHome() })) }) {
+            Button(onClick = { viewModel.onEvent(LoginEvent.Login(onSuccessLogin = { navigator.navigate(HomeScreenDestination) })) }) {
                 Text(text = "LogIn")
             }
         }

@@ -13,17 +13,25 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.pico.make_it_so.R
+import com.pico.make_it_so.presentation._nav_graphs.HomeNavGraph
 import com.pico.make_it_so.presentation.settings.components.SettingOption
 import com.pico.make_it_so.presentation.settings.components.SettingsTopAppBar
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @OptIn(ExperimentalMaterial3Api::class)
+@HomeNavGraph
+@Destination
 @Composable
-fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel(), navigateBack: () -> Unit) {
+fun SettingsScreen(
+    viewModel: SettingsViewModel = hiltViewModel(),
+    navigator: DestinationsNavigator
+) {
     val uiState = viewModel.uiState
 
     Scaffold(
         topBar = {
-            SettingsTopAppBar(navigateBack)
+            SettingsTopAppBar { navigator.navigateUp() }
         }
     ) { paddingValues ->
         Column(

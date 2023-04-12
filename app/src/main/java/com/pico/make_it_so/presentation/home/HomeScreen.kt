@@ -15,16 +15,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.pico.make_it_so.presentation._nav_graphs.HomeNavGraph
+import com.pico.make_it_so.presentation.destinations.AddEditScreenDestination
 import com.pico.make_it_so.presentation.home.components.HomeScreenTopAppBar
 import com.pico.make_it_so.presentation.home.components.TaskListItem
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @OptIn(ExperimentalMaterial3Api::class)
+@HomeNavGraph(start = true)
+@Destination
 @Composable
 fun HomeScreen(
     viewModel: HomeScreenViewModel = hiltViewModel(),
-    navigateToLogin: () -> Unit,
-    navigateToSignUp: () -> Unit,
-    navigateToAddEditScreen: () -> Unit
+    navigator: DestinationsNavigator
 ) {
     val uiState = viewModel.uiState
     val tasks by uiState.tasks.collectAsState(initial = emptyList())
@@ -32,7 +36,7 @@ fun HomeScreen(
     Scaffold(
         topBar = { HomeScreenTopAppBar() },
         floatingActionButton = {
-            FloatingActionButton(onClick = { navigateToAddEditScreen() }) {
+            FloatingActionButton(onClick = { navigator.navigate(AddEditScreenDestination) }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = null)
             }
         }

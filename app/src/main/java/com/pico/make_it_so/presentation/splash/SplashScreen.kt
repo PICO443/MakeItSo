@@ -13,18 +13,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.pico.make_it_so.presentation.NavGraphs
+import com.pico.make_it_so.presentation._nav_graphs.OnBoardingNavGraph
+import com.pico.make_it_so.presentation.destinations.SplashScreenDestination
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @OptIn(ExperimentalMaterial3Api::class)
+@OnBoardingNavGraph(start = true)
+@Destination
 @Composable
 fun SplashScreen(
     viewModel: SplashViewModel = hiltViewModel(),
-    navigateToHome: () -> Unit,
-    navigateToSignUp: () -> Unit
+    navigator: DestinationsNavigator
 ) {
     val uiState = viewModel.uiState
     LaunchedEffect(key1 = Unit) {
         if (uiState.isLoggedIn) {
-            navigateToHome()
+            navigator.navigate(NavGraphs.home) {
+                popUpTo(SplashScreenDestination.route) { inclusive = true }
+            }
         }
     }
     Scaffold() { paddingValues ->
@@ -33,12 +41,14 @@ fun SplashScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
         ) {
             Text(text = "state: ${uiState.isLoggedIn}")
-            Button(onClick = navigateToSignUp) {
+            Button(onClick = { }) {
                 Text(text = "Sign Up")
             }
             Button(onClick = {
                 viewModel.onEvent(SplashEvent.LoginAnonymously(onLoginSuccess = {
-                    navigateToHome()
+                    navigator.navigate(NavGraphs.home) {
+                        popUpTo(SplashScreenDestination.route) { inclusive = true }
+                    }
                 }))
             }) {
                 Text(text = "Continue Offline")
