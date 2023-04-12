@@ -1,12 +1,15 @@
 package com.pico.make_it_so.presentation.settings
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.pico.make_it_so.R
@@ -15,29 +18,58 @@ import com.pico.make_it_so.presentation.settings.components.SettingsTopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel(), navigateBack: () -> Unit){
+fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel(), navigateBack: () -> Unit) {
     val uiState = viewModel.uiState
-    var settingsOptions by remember {
-        mutableStateOf(listOf<SettingOption>())
-    }
-    LaunchedEffect(key1 = uiState.isLoggedIn){
-        if(uiState.isLoggedIn.not()){
-            val settings = mutableListOf<SettingOption>()
-            settings.add(SettingOption("Login", R.drawable.login_black_24dp))
-            settings.add(SettingOption("Sign up", R.drawable.person_add_black_24dp))
-            settingsOptions = settings
-        }
-    }
+
     Scaffold(
         topBar = {
             SettingsTopAppBar(navigateBack)
         }
     ) { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues)) {
-            settingsOptions.forEach {
-                SettingOption(settingOption = it)
-                Divider(Modifier.padding(vertical = 16.dp))
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+                .padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.song_cover),
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(70.dp)
+                            .aspectRatio(1f)
+                            .clip(CircleShape),
+                        contentDescription = null
+                    )
+                    Column() {
+                        Text(text = "Abubakr Elsadig", style = MaterialTheme.typography.bodyLarge)
+                        Text(
+                            text = "abubakrko32@gmail.com",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                }
             }
+            SettingOption(
+                settingOption = SettingOption(
+                    label = "Login",
+                    icon = R.drawable.login_black_24dp
+                )
+            )
+            Divider()
+            SettingOption(
+                settingOption = SettingOption(
+                    label = "Sign Up",
+                    icon = R.drawable.person_add_black_24dp
+                )
+            )
         }
     }
 }

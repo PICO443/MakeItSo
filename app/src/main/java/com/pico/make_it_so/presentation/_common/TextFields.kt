@@ -1,4 +1,4 @@
-package com.pico.make_it_so.presentation.sign_up.components
+package com.pico.make_it_so.presentation._common
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.text.KeyboardOptions

@@ -1,4 +1,4 @@
-package com.pico.make_it_so.presentation.sign_up
+package com.pico.make_it_so.presentation.log_in
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
@@ -12,47 +12,37 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.pico.make_it_so.presentation._common.EmailTextField
 import com.pico.make_it_so.presentation._common.PasswordTextField
-import com.pico.make_it_so.presentation.sign_up.components.SignUpTopAppBar
+import com.pico.make_it_so.presentation.log_in.components.LoginTopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUpScreen(
-    viewModel: SignUpViewModel = hiltViewModel(),
+fun LoginScreen(
+    viewModel: LoginViewModel = hiltViewModel(),
     navigateBack: () -> Unit,
     navigateToHome: () -> Unit
 ) {
     val uiState = viewModel.uiState
-
     Scaffold(
         topBar = {
-            SignUpTopAppBar(navigateBack)
+            LoginTopAppBar(navigateBack)
         }
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
         ) {
             EmailTextField(
                 value = uiState.email,
-                onValueChange = { viewModel.onEvent(SignUpEvent.OnEmailChange(it)) },
-                placeholder = "Email"
-            )
+                onValueChange = { viewModel.onEvent(LoginEvent.OnEmailChange(it)) })
             PasswordTextField(
                 value = uiState.password,
-                onValueChange = { viewModel.onEvent(SignUpEvent.OnPasswordChange(it)) },
-                placeholder = "Password"
-            )
-            PasswordTextField(
-                value = uiState.repeatedPassword,
-                onValueChange = { viewModel.onEvent(SignUpEvent.OnRepeatPasswordChange(it)) },
-                placeholder = "Repeat Password"
-            )
+                onValueChange = { viewModel.onEvent(LoginEvent.OnPasswordChange(it)) })
             Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = { viewModel.onEvent(SignUpEvent.SignUp); navigateToHome() }) {
-                Text(text = "Sign Up")
+            Button(onClick = { viewModel.onEvent(LoginEvent.Login(onSuccessLogin = { navigateToHome() })) }) {
+                Text(text = "LogIn")
             }
         }
     }
