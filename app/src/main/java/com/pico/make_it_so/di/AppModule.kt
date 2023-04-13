@@ -1,10 +1,14 @@
 package com.pico.make_it_so.di
 
+import android.content.Context
+import com.google.android.gms.auth.api.identity.Identity
 import com.pico.make_it_so.data.firebase.services.authentication.AccountService
 import com.pico.make_it_so.domain.use_case.*
+import com.pico.make_it_so.presentation.auth.google_sign_in.GoogleAuthUiClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -20,6 +24,15 @@ object AppModule {
             getCurrentUserUseCase = GetCurrentUserUseCase(accountService),
             loginUseCase = LoginUseCase(accountService),
             loginAnonymouslyUseCase = LoginAnonymouslyUseCase(accountService)
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideGoogleAuthUiClient(@ApplicationContext context: Context): GoogleAuthUiClient {
+        return GoogleAuthUiClient(
+            context = context,
+            oneTapClient = Identity.getSignInClient(context)
         )
     }
 }

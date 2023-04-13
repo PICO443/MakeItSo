@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">MakeItSo</string>
+    <string name="home_screen_label">Home</string>
+    <string name="focus_session_screen_label">Focus Session</string>
+    <string name="settings_screen_label">Settings</string>
 </resources>
