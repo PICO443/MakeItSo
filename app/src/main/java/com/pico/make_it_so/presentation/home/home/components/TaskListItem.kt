@@ -1,5 +1,6 @@
 package com.pico.make_it_so.presentation.home.home.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -14,12 +15,18 @@ import com.pico.make_it_so.domain.model.Task
 import com.pico.make_it_so.ui.theme.MakeItSoTheme
 
 @Composable
-fun TaskListItem(task: Task, onTaskCheck: (Boolean) -> Unit, modifier: Modifier = Modifier) {
+fun TaskListItem(
+    task: Task,
+    onTaskCheck: (Boolean) -> Unit,
+    onClick: (Task) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Card(modifier = modifier) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(4.dp),
+                .padding(4.dp)
+                .clickable(onClick = { onClick(task) }),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -42,6 +49,6 @@ fun TaskListItem(task: Task, onTaskCheck: (Boolean) -> Unit, modifier: Modifier 
 @Composable
 fun TaskListItemPreview() {
     MakeItSoTheme() {
-        TaskListItem(task = Task(title = "Important Task"), onTaskCheck = {})
+        TaskListItem(task = Task(title = "Important Task"), onTaskCheck = {}, onClick = {})
     }
 }

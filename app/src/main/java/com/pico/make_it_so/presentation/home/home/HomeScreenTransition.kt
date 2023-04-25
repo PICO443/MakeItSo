@@ -12,7 +12,7 @@ object HomeScreenTransition : DestinationStyle.Animated {
     override fun AnimatedContentScope<NavBackStackEntry>.enterTransition(): EnterTransition {
         return if (NavGraphs.home.destinations.contains(initialState.appDestination())) {
             slideInHorizontally(
-                initialOffsetX = { -1000 },
+                initialOffsetX = { -it },
                 animationSpec = tween(700)
             )
         } else {
@@ -22,7 +22,7 @@ object HomeScreenTransition : DestinationStyle.Animated {
 
     override fun AnimatedContentScope<NavBackStackEntry>.exitTransition(): ExitTransition {
         return slideOutHorizontally(
-            targetOffsetX = { -1000 },
+            targetOffsetX = { -it },
             animationSpec = tween(700)
         )
     }

@@ -1,3 +1,8 @@
 package com.pico.make_it_so.presentation.home.settings
 
-data class SettingsUiState(val isLoggedIn: Boolean = false)
+import com.pico.make_it_so.domain.model.User
+
+data class SettingsUiState(
+    val user: User? = null,
+    val isLoggedIn: Boolean = false
+)

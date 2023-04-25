@@ -9,14 +9,14 @@ import com.ramcosta.composedestinations.spec.DestinationStyle
 object SettingsTransition: DestinationStyle.Animated {
     override fun AnimatedContentScope<NavBackStackEntry>.enterTransition(): EnterTransition {
         return slideInHorizontally(
-            initialOffsetX = { 1000 },
+            initialOffsetX = { it },
             animationSpec = tween(700)
         )
     }
 
     override fun AnimatedContentScope<NavBackStackEntry>.exitTransition(): ExitTransition {
         return slideOutHorizontally(
-            targetOffsetX = {1000},
+            targetOffsetX = {it},
             animationSpec = tween(700)
         )
     }

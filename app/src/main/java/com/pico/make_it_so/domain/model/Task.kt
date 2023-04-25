@@ -1,5 +1,8 @@
 package com.pico.make_it_so.domain.model
 
+import androidx.compose.runtime.Stable
+
+@Stable
 data class Task(
     val id: String = "",
     val title: String = "",
@@ -10,5 +13,4 @@ data class Task(
     val url: String = "",
     val flag: Boolean = false,
     val completed: Boolean = false,
-    val userId: String = ""
 )

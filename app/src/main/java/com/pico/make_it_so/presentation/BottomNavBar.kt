@@ -18,7 +18,14 @@ fun BottomNavBar(navController: NavController) {
         HomeBottomBarDestinations.values().forEach {
             NavigationBarItem(
                 selected = currentDestination == it.direction,
-                onClick = { navController.navigate(it.direction.route) { launchSingleTop = true } },
+                onClick = {
+                    navController.navigate(it.direction.route) {
+                        launchSingleTop = true
+                        popUpTo(it.direction.route){
+                            inclusive = true
+                        }
+                    }
+                },
                 label = { Text(text = stringResource(id = it.label)) },
                 icon = { Icon(painter = painterResource(id = it.icon), contentDescription = null) }
             )

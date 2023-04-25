@@ -13,6 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.pico.make_it_so.R
+import com.pico.make_it_so.presentation.NavGraphs
 import com.pico.make_it_so.presentation._nav_graphs.HomeNavGraph
 import com.pico.make_it_so.presentation.home.settings.components.SettingOption
 import com.pico.make_it_so.presentation.home.settings.components.SettingsTopAppBar
@@ -59,35 +60,46 @@ fun SettingsScreen(
                         contentDescription = null
                     )
                     Column() {
-                        Text(text = "Abubakr Elsadig", style = MaterialTheme.typography.bodyLarge)
                         Text(
-                            text = "abubakrko32@gmail.com",
+                            text = uiState.user?.username ?: "No Name",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                        Text(
+                            text = uiState.user?.email ?: "no email",
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
                 }
             }
-            SettingOption(
-                settingOption = SettingOption(
-                    label = "SignOut",
-                    icon = R.drawable.login_black_24dp,
+            if (uiState.isLoggedIn) {
+                SettingOption(
+                    label = "Sign Out",
+                    icon = R.drawable.logout_fill0_wght400_grad0_opsz24,
                     onClick = {
                         coroutineScope.launch {
                             viewModel.signOut()
+                            navigator.navigate(NavGraphs.auth) {
+                                popUpTo(NavGraphs.home.route) { inclusive = true }
+                            }
                         }
                     }
                 )
-            )
-            Divider()
-            SettingOption(
-                settingOption = SettingOption(
+            } else {
+                SettingOption(
+                    label = "Login",
+                    icon = R.drawable.login_black_24dp,
+                    onClick = {
+                    }
+                )
+                SettingOption(
                     label = "Sign Up",
                     icon = R.drawable.person_add_black_24dp,
                     onClick = {
 
                     }
                 )
-            )
+            }
         }
+
     }
 }

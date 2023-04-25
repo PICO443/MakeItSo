@@ -17,12 +17,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.pico.make_it_so.presentation._nav_graphs.HomeNavGraph
 import com.pico.make_it_so.presentation.destinations.AddEditScreenDestination
+import com.pico.make_it_so.presentation.destinations.TaskDetailsScreenDestination
 import com.pico.make_it_so.presentation.home.home.components.HomeScreenTopAppBar
 import com.pico.make_it_so.presentation.home.home.components.TaskListItem
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
-@OptIn(ExperimentalMaterial3Api::class)
 @HomeNavGraph(start = true)
 @Destination(style = HomeScreenTransition::class)
 @Composable
@@ -51,7 +51,9 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(8.dp))
             }
             items(tasks) { task ->
-                TaskListItem(task = task, onTaskCheck = {})
+                TaskListItem(task = task, onTaskCheck = {}, onClick = {
+                    navigator.navigate(TaskDetailsScreenDestination)
+                })
             }
         }
     }

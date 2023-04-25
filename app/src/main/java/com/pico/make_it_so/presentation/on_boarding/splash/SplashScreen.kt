@@ -42,9 +42,7 @@ fun SplashScreen(
         ) {
             Text(text = "state: ${uiState.isLoggedIn}")
             Button(onClick = {
-                navigator.navigate(NavGraphs.auth) {
-                    popUpTo(SplashScreenDestination.route) { inclusive = true }
-                }
+                navigator.navigate(NavGraphs.auth)
             }) {
                 Text(text = "Sign Up")
             }

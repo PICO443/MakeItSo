@@ -4,12 +4,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.pico.make_it_so.data.firebase.services.authentication.AccountService
 import com.pico.make_it_so.domain.model.Task
 import com.pico.make_it_so.domain.repository.TaskRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,31 +19,38 @@ class AddEditTaskViewModel @Inject constructor(
     var uiState by mutableStateOf(AddEditTaskUiState())
         private set
 
-    fun onEvent(event: AddEditTaskEvent) {
+    suspend fun onEvent(event: AddEditTaskEvent) {
         when (event) {
-            is AddEditTaskEvent.TitleChanged -> {
+            is AddEditTaskEvent.OnTitleChange -> {
                 uiState = uiState.copy(taskTitle = event.title)
             }
-            is AddEditTaskEvent.DescriptionChanged -> {
+            is AddEditTaskEvent.OnDescriptionChange -> {
                 uiState = uiState.copy(taskDescription = event.description)
             }
             is AddEditTaskEvent.SaveTask -> {
-                viewModelScope.launch {
-                    taskRepository.addTask(
-                        task = Task(
-                            userId = accountService.currentUser?.uid.orEmpty(),
-                            title = uiState.taskTitle,
-                            description = uiState.taskDescription
-                        )
+                taskRepository.addTask(
+                    task = Task(
+                        title = uiState.taskTitle,
+                        description = uiState.taskDescription
                     )
-                }
+                )
+            }
+            is AddEditTaskEvent.OnTaskDateChange -> {
+                uiState = uiState.copy(
+                    taskDateMillis = event.taskDateMillis
+                )
+            }
+            is AddEditTaskEvent.OnTaskDurationChange -> {
+
             }
         }
     }
 }
 
 sealed class AddEditTaskEvent() {
-    class TitleChanged(val title: String) : AddEditTaskEvent()
-    class DescriptionChanged(val description: String) : AddEditTaskEvent()
+    class OnTitleChange(val title: String) : AddEditTaskEvent()
+    class OnDescriptionChange(val description: String) : AddEditTaskEvent()
+    class OnTaskDateChange(val taskDateMillis: Long) : AddEditTaskEvent()
+    class OnTaskDurationChange(val taskDurationMinutes: Int) : AddEditTaskEvent()
     object SaveTask : AddEditTaskEvent()
 }

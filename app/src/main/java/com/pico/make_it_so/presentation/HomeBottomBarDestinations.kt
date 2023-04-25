@@ -3,7 +3,7 @@ package com.pico.make_it_so.presentation
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.pico.make_it_so.R
-import com.pico.make_it_so.presentation.destinations.FocusSessionScreenDestination
+import com.pico.make_it_so.presentation.destinations.FocusSessionTimePickerDestination
 import com.pico.make_it_so.presentation.destinations.HomeScreenDestination
 import com.pico.make_it_so.presentation.destinations.SettingsScreenDestination
 import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
@@ -19,7 +19,7 @@ enum class HomeBottomBarDestinations(
         label = R.string.home_screen_label
     ),
     FocusSession(
-        direction = FocusSessionScreenDestination,
+        direction = FocusSessionTimePickerDestination,
         icon = R.drawable.mindfulness_fill0_wght400_grad0_opsz24,
         label = R.string.focus_session_screen_label
     ),

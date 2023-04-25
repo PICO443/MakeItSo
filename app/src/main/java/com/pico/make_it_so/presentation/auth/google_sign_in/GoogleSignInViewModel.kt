@@ -27,6 +27,16 @@ class GoogleSignInViewModel @Inject constructor(
     }
 
     suspend fun getSignInIntentSender(): IntentSender? {
-        return googleAuthUiClient.signIn()
+        val intentSender = googleAuthUiClient.beginSignIn()
+        if(intentSender == null){
+            uiState = uiState.copy(errorMessage = "Error while starting sign in")
+        }
+        return intentSender
+    }
+
+    fun updateIsLoading(isLoading: Boolean) {
+        uiState = uiState.copy(
+            isLoading = isLoading
+        )
     }
 }
