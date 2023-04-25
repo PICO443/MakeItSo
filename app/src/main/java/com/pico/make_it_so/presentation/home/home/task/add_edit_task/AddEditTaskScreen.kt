@@ -10,14 +10,13 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.pico.make_it_so.R
+import com.pico.make_it_so.core.getDate
 import com.pico.make_it_so.presentation._nav_graphs.TaskNavGraph
 import com.pico.make_it_so.presentation.home.home.task.add_edit_task.components.AddEditTaskTopAppBar
 import com.pico.make_it_so.presentation.home.home.task.add_edit_task.components.IconButtonOption
 import com.pico.make_it_so.ui.theme.MakeItSoTheme
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,35 +28,11 @@ fun AddEditScreen(
     navigator: DestinationsNavigator
 ) {
     val uiState = viewModel.uiState
-    val coroutineScope = rememberCoroutineScope()
-
-    fun getDate(timeMillis: Long): String {
-        val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.US)
-        val selectedDate = Calendar.getInstance()
-        selectedDate.timeInMillis = timeMillis
-        val todayDate = Calendar.getInstance()
-        val tomorrowDate = Calendar.getInstance()
-        tomorrowDate.add(Calendar.DATE, 1)
-        return when (formatter.format(selectedDate.timeInMillis)) {
-            formatter.format(todayDate.timeInMillis) -> {
-                "Today"
-            }
-            formatter.format(tomorrowDate.timeInMillis) -> {
-                "Tomorrow"
-            }
-            else -> {
-                formatter.format(selectedDate.timeInMillis)
-            }
-        }
-    }
 
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                coroutineScope.launch {
-                    viewModel.onEvent(AddEditTaskEvent.SaveTask)
-                    navigator.navigateUp()
-                }
+                viewModel.onEvent(AddEditTaskEvent.SaveTask(onSuccess = {navigator.navigateUp()}))
             }) {
                 Icon(
                     painter = painterResource(id = R.drawable.save_fill0_wght400_grad0_opsz24),
@@ -79,7 +54,7 @@ fun AddEditScreen(
             var openDatePicker by remember {
                 mutableStateOf(false)
             }
-            val datePickerState = rememberDatePickerState(uiState.taskDateMillis)
+            val datePickerState = rememberDatePickerState(uiState.taskTimestamp.toDate().time)
 
             if (openDatePicker) {
                 DatePickerDialog(
@@ -89,12 +64,10 @@ fun AddEditScreen(
                     confirmButton = {
                         TextButton(onClick = {
                             openDatePicker = false
-                            coroutineScope.launch {
-                                datePickerState.selectedDateMillis?.let {
-                                    viewModel.onEvent(
-                                        AddEditTaskEvent.OnTaskDateChange(it)
-                                    )
-                                }
+                            datePickerState.selectedDateMillis?.let {
+                                viewModel.onEvent(
+                                    AddEditTaskEvent.OnTaskDateChange(it)
+                                )
                             }
                         }) {
                             Text(text = "Confirm")
@@ -115,26 +88,24 @@ fun AddEditScreen(
                 value = uiState.taskTitle,
                 placeholder = { Text(text = "Title") },
                 onValueChange = {
-                    coroutineScope.launch {
-                        viewModel.onEvent(AddEditTaskEvent.OnTitleChange(it))
-                    }
+                    viewModel.onEvent(AddEditTaskEvent.OnTitleChange(it))
                 },
                 singleLine = true,
+                isError = uiState.hasTaskTitleError,
+                supportingText = {if(uiState.hasTaskTitleError) Text(text = "Title can't be empty !")},
                 modifier = Modifier.fillMaxWidth()
             )
             TextField(
-                value = uiState.taskDescription,
+                value = uiState.taskDescription ?: "",
                 placeholder = { Text(text = "Description") },
                 onValueChange = {
-                    coroutineScope.launch {
                         viewModel.onEvent(AddEditTaskEvent.OnDescriptionChange(it))
-                    }
                 },
                 modifier = Modifier.fillMaxWidth()
             )
             IconButtonOption(
                 label = "Date",
-                supportingText = getDate(uiState.taskDateMillis),
+                supportingText = getDate(uiState.taskTimestamp.toDate().time),
                 icon = ImageVector.vectorResource(id = R.drawable.calendar_month_fill0_wght400_grad0_opsz24),
                 onButtonClicked = {
                     openDatePicker = true

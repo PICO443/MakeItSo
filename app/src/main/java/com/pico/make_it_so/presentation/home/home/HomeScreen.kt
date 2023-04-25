@@ -8,7 +8,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.*
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -31,7 +34,7 @@ fun HomeScreen(
     navigator: DestinationsNavigator
 ) {
     val uiState = viewModel.uiState
-    val tasks by uiState.tasks.collectAsState(initial = emptyList())
+    val tasks by uiState.tasks.collectAsState(initial = emptyMap())
 
     Scaffold(
         topBar = { HomeScreenTopAppBar() },
@@ -50,10 +53,12 @@ fun HomeScreen(
                 Text(text = "Today")
                 Spacer(modifier = Modifier.height(8.dp))
             }
-            items(tasks) { task ->
-                TaskListItem(task = task, onTaskCheck = {}, onClick = {
-                    navigator.navigate(TaskDetailsScreenDestination)
-                })
+            tasks[TaskGroup.TODAY]?.let {
+                items(it) { task ->
+                    TaskListItem(task = task, onTaskCheck = {}, onClick = {
+                        navigator.navigate(TaskDetailsScreenDestination)
+                    })
+                }
             }
         }
     }

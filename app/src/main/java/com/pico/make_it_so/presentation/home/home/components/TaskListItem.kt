@@ -33,7 +33,10 @@ fun TaskListItem(
             Checkbox(checked = task.completed, onCheckedChange = onTaskCheck)
             Column(modifier = Modifier.weight(1f)) {
                 Text(text = task.title, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                Text(text = task.description, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                task.description?.let {
+                    Text(text = it, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                }
+
             }
             IconButton(onClick = { /*TODO*/ }) {
                 Icon(

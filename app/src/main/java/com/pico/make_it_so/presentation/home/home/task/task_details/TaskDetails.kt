@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.firebase.Timestamp
 import com.pico.make_it_so.R
 import com.pico.make_it_so.domain.model.Task
 import com.pico.make_it_so.presentation._nav_graphs.TaskNavGraph
@@ -32,8 +33,7 @@ fun TaskDetailsScreen(
                 Task(
                     title = "Finish this stupid application",
                     description = "lorem ipusome some oho so some of th some onf po ;li okd , apsodkf tho asdkof thowe some ",
-                    dueDate = "04/04/2023",
-                    dueTime = "02:30"
+                    dueDate = Timestamp.now(),
                 )
             )
         )
@@ -56,7 +56,9 @@ fun TaskDetailsScreen(
             uiState.task.apply {
                 Column {
                     Text(text = title, style = MaterialTheme.typography.titleLarge)
-                    Text(text = description)
+                    description?.let {
+                        Text(text = it)
+                    }
                 }
                 Surface(tonalElevation = 3.dp, shape = MaterialTheme.shapes.medium) {
                     Row(
@@ -67,15 +69,15 @@ fun TaskDetailsScreen(
                         horizontalArrangement = Arrangement.SpaceAround
                     ) {
                         IconWithLabel(
-                            label = dueDate,
+                            label = dueDate.toString(),
                             icon = R.drawable.calendar_month_fill0_wght400_grad0_opsz24
                         )
                         IconWithLabel(
-                            label = dueTime,
+                            label = dueDate.toString(),
                             icon = R.drawable.schedule_fill0_wght400_grad0_opsz24
                         )
                         IconWithLabel(
-                            label = dueTime,
+                            label = dueDate.toString(),
                             icon = R.drawable.schedule_fill0_wght400_grad0_opsz24
                         )
                     }

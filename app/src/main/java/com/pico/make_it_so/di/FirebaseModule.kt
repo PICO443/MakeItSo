@@ -17,7 +17,11 @@ import javax.inject.Singleton
 object FirebaseModule {
     @Singleton
     @Provides
-    fun provideAuth(): FirebaseAuth = Firebase.auth
+    fun provideAuth(): FirebaseAuth {
+        val firebaseAuth = Firebase.auth
+        firebaseAuth.useEmulator("10.0.2.2", 9099)
+        return firebaseAuth
+    }
 
     @Singleton
     @Provides
