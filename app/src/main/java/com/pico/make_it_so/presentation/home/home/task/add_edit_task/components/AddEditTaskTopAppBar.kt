@@ -8,10 +8,12 @@ import androidx.compose.runtime.Composable
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddEditTaskTopAppBar(navigateBack: () -> Unit) {
-    TopAppBar(title = { Text(text = "Add New Task") }, navigationIcon = {
-        IconButton(onClick = navigateBack) {
-            Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
-        }
-    })
+fun AddEditTaskTopAppBar(navigateBack: () -> Unit, isEditing: Boolean) {
+    TopAppBar(
+        title = { Text(text = if (isEditing) "Editing Task" else "Add New Task") },
+        navigationIcon = {
+            IconButton(onClick = navigateBack) {
+                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
+            }
+        })
 }

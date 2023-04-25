@@ -12,6 +12,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.pico.make_it_so.R
 import com.pico.make_it_so.core.getDate
 import com.pico.make_it_so.presentation._nav_graphs.TaskNavGraph
+import com.pico.make_it_so.presentation.destinations.HomeScreenDestination
 import com.pico.make_it_so.presentation.home.home.task.add_edit_task.components.AddEditTaskTopAppBar
 import com.pico.make_it_so.presentation.home.home.task.add_edit_task.components.IconButtonOption
 import com.pico.make_it_so.ui.theme.MakeItSoTheme
@@ -21,18 +22,24 @@ import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @TaskNavGraph(start = true)
-@Destination
+@Destination(
+    navArgsDelegate = AddEditTaskNavArgs::class
+)
 @Composable
 fun AddEditScreen(
     viewModel: AddEditTaskViewModel = hiltViewModel(),
-    navigator: DestinationsNavigator
+    navigator: DestinationsNavigator,
 ) {
     val uiState = viewModel.uiState
 
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                viewModel.onEvent(AddEditTaskEvent.SaveTask(onSuccess = {navigator.navigateUp()}))
+                viewModel.onEvent(AddEditTaskEvent.SaveTask(onSuccess = {
+                    navigator.navigate(HomeScreenDestination) {
+                        popUpTo(HomeScreenDestination.route) { inclusive = true }
+                    }
+                }))
             }) {
                 Icon(
                     painter = painterResource(id = R.drawable.save_fill0_wght400_grad0_opsz24),
@@ -41,7 +48,10 @@ fun AddEditScreen(
             }
         },
         topBar = {
-            AddEditTaskTopAppBar(navigateBack = { navigator.navigateUp() })
+            AddEditTaskTopAppBar(
+                navigateBack = { navigator.navigateUp() },
+                isEditing = uiState.editing
+            )
         }
     ) { paddingValues ->
         Column(
@@ -92,14 +102,14 @@ fun AddEditScreen(
                 },
                 singleLine = true,
                 isError = uiState.hasTaskTitleError,
-                supportingText = {if(uiState.hasTaskTitleError) Text(text = "Title can't be empty !")},
+                supportingText = { if (uiState.hasTaskTitleError) Text(text = "Title can't be empty !") },
                 modifier = Modifier.fillMaxWidth()
             )
             TextField(
                 value = uiState.taskDescription ?: "",
                 placeholder = { Text(text = "Description") },
                 onValueChange = {
-                        viewModel.onEvent(AddEditTaskEvent.OnDescriptionChange(it))
+                    viewModel.onEvent(AddEditTaskEvent.OnDescriptionChange(it))
                 },
                 modifier = Modifier.fillMaxWidth()
             )

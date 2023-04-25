@@ -1,14 +1,15 @@
 package com.pico.make_it_so.domain.model
 
-import androidx.compose.runtime.Stable
+import android.os.Parcelable
 import com.google.firebase.Timestamp
+import kotlinx.parcelize.Parcelize
 
-@Stable
+@Parcelize
 data class Task(
     val id: String = "",
     val title: String = "",
     val description: String? = null,
     val dueDate: Timestamp = Timestamp.now(),
-    val timeTookInSeconds: Int = 0,
+    val timeSpentInMinutes: Int = 20,
     val completed: Boolean = false,
-)
+) : Parcelable

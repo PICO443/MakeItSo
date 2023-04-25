@@ -4,9 +4,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,17 +34,35 @@ fun TaskListItem(
         ) {
             Checkbox(checked = task.completed, onCheckedChange = onTaskCheck)
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = task.title, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(
+                    text = task.title,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    textDecoration = if (task.completed) TextDecoration.LineThrough else TextDecoration.None
+                )
                 task.description?.let {
                     Text(text = it, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
-
             }
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.more_vert_fill0_wght400_grad0_opsz24),
-                    contentDescription = null
-                )
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.End),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (task.timeSpentInMinutes > 0) {
+                    CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant) {
+                        Text(
+                            text = "Took ${task.timeSpentInMinutes} Min",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.more_vert_fill0_wght400_grad0_opsz24),
+                        contentDescription = null
+                    )
+                }
             }
         }
     }

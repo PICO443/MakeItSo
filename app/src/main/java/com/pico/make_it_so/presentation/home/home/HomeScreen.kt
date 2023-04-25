@@ -39,7 +39,7 @@ fun HomeScreen(
     Scaffold(
         topBar = { HomeScreenTopAppBar() },
         floatingActionButton = {
-            FloatingActionButton(onClick = { navigator.navigate(AddEditScreenDestination) }) {
+            FloatingActionButton(onClick = { navigator.navigate(AddEditScreenDestination(task = null)) }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = null)
             }
         }
@@ -54,12 +54,20 @@ fun HomeScreen(
                     Text(text = entry.key)
                     Spacer(modifier = Modifier.height(4.dp))
                 }
-                items(entry.value) { task ->
+                items(entry.value, key = { it.id }) { task ->
                     TaskListItem(
                         task = task,
-                        onTaskCheck = { viewModel.onEvent(HomeEvent.OnTaskCompleteChange(task.copy(completed = it))) },
+                        onTaskCheck = {
+                            viewModel.onEvent(
+                                HomeEvent.OnTaskCompleteChange(
+                                    task.copy(
+                                        completed = it
+                                    )
+                                )
+                            )
+                        },
                         onClick = {
-                            navigator.navigate(TaskDetailsScreenDestination)
+                            navigator.navigate(TaskDetailsScreenDestination(task = it))
                         })
                 }
                 item {

@@ -46,7 +46,7 @@ class HomeScreenViewModel @Inject constructor(
         when (event) {
             is HomeEvent.OnTaskCompleteChange -> {
                 viewModelScope.launch {
-                    taskRepository.addTask(event.task)
+                    taskRepository.setTaskAsCompleted(event.task)
                 }
             }
         }
