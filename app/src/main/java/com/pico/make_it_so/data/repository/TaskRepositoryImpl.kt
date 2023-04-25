@@ -1,6 +1,7 @@
 package com.pico.make_it_so.data.repository
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.snapshots
 import com.google.firebase.firestore.ktx.toObjects
 import com.pico.make_it_so.data.firebase.services.authentication.AccountService
@@ -15,7 +16,7 @@ class TaskRepositoryImpl @Inject constructor(private val db: FirebaseFirestore, 
     override val tasks: Flow<List<Task>>
         get() {
             val query = db.collection("users/${accountService.currentUser?.uid}/tasks")
-            return query.snapshots().map {
+            return query.orderBy(Task::dueDate.name, Query.Direction.DESCENDING).snapshots().map {
                 it.toObjects()
             }
         }

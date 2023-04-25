@@ -8,4 +8,4 @@ const val TODAY_KEY = "Today"
 const val TOMORROW_KEY = "Tomorrow"
 
 // Task
-const val ALL_TASKS_KEY = "All Tasks"
+const val FINISHED_TASK_GROUP_KEY = "Finished"

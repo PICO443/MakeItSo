@@ -49,17 +49,24 @@ fun HomeScreen(
             verticalArrangement = Arrangement.spacedBy(4.dp),
             modifier = Modifier.padding(16.dp)
         ) {
-            item {
-                Text(text = "Today")
-                Spacer(modifier = Modifier.height(8.dp))
-            }
-            tasks[TaskGroup.TODAY]?.let {
-                items(it) { task ->
-                    TaskListItem(task = task, onTaskCheck = {}, onClick = {
-                        navigator.navigate(TaskDetailsScreenDestination)
-                    })
+            tasks.forEach { entry ->
+                item {
+                    Text(text = entry.key)
+                    Spacer(modifier = Modifier.height(4.dp))
+                }
+                items(entry.value) { task ->
+                    TaskListItem(
+                        task = task,
+                        onTaskCheck = { viewModel.onEvent(HomeEvent.OnTaskCompleteChange(task.copy(completed = it))) },
+                        onClick = {
+                            navigator.navigate(TaskDetailsScreenDestination)
+                        })
+                }
+                item {
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
+
         }
     }
 }
