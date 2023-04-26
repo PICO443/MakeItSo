@@ -108,7 +108,7 @@ fun FocusSessionTimePicker(
                 }
             }
             item {
-                Text(text = "Select a task for the focus session")
+                Text(text = "Select a task for the focus session", textAlign = TextAlign.Start)
                 Surface(
                     shape = MaterialTheme.shapes.large,
                     tonalElevation = 3.dp

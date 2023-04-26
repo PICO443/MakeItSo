@@ -5,12 +5,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
+import com.pico.make_it_so.presentation.on_boarding.splash.SplashViewModel
 import com.pico.make_it_so.ui.theme.MakeItSoTheme
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.animations.defaults.RootNavGraphDefaultAnimations
@@ -20,9 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @OptIn(
-        ExperimentalMaterialNavigationApi::class, ExperimentalAnimationApi::class,
-        ExperimentalMaterial3Api::class
-    )
+        ExperimentalMaterialNavigationApi::class, ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -32,6 +31,8 @@ class MainActivity : ComponentActivity() {
                 )
                 val navController = rememberAnimatedNavController()
                 val currentDestination by navController.appCurrentDestinationAsState()
+                val splashScreenViewModel: SplashViewModel = hiltViewModel()
+                val uiState = splashScreenViewModel.uiState
                 Scaffold(
                     bottomBar = {
                         currentDestination?.let {
@@ -43,6 +44,7 @@ class MainActivity : ComponentActivity() {
                     DestinationsNavHost(
                         modifier = Modifier.padding(it),
                         navController = navController,
+                        startRoute = if(uiState.isLoggedIn) NavGraphs.home else NavGraphs.onBoarding,
                         navGraph = NavGraphs.root,
                         engine = animationEngine
                     )

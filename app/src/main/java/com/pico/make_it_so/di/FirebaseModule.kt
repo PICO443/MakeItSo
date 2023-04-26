@@ -4,7 +4,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.firestoreSettings
 import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
@@ -19,7 +18,7 @@ object FirebaseModule {
     @Provides
     fun provideAuth(): FirebaseAuth {
         val firebaseAuth = Firebase.auth
-        firebaseAuth.useEmulator("10.0.2.2", 9099)
+//        firebaseAuth.useEmulator("10.0.2.2", 9099)
         return firebaseAuth
     }
 
@@ -29,11 +28,11 @@ object FirebaseModule {
         // 10.0.2.2 is the special IP address to connect to the 'localhost' of
         // the host computer from an Android emulator.
         val firestore = Firebase.firestore
-        firestore.useEmulator("10.0.2.2", 8080)
-
-        firestore.firestoreSettings = firestoreSettings {
-            isPersistenceEnabled = false
-        }
+//        firestore.useEmulator("10.0.2.2", 8080)
+//
+//        firestore.firestoreSettings = firestoreSettings {
+//            isPersistenceEnabled = false
+//        }
         return firestore
     }
 }

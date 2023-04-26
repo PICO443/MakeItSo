@@ -21,13 +21,18 @@ fun BottomNavBar(navController: NavController) {
                 onClick = {
                     navController.navigate(it.direction.route) {
                         launchSingleTop = true
-                        popUpTo(it.direction.route){
+                        popUpTo(it.direction.route) {
                             inclusive = true
                         }
                     }
                 },
                 label = { Text(text = stringResource(id = it.label)) },
-                icon = { Icon(painter = painterResource(id = it.icon), contentDescription = null) }
+                icon = {
+                    Icon(
+                        painter = painterResource(id = if (currentDestination == it.direction) it.filledIcon else it.icon),
+                        contentDescription = null
+                    )
+                }
             )
         }
     }
