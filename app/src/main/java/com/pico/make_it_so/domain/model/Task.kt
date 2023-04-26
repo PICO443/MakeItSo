@@ -10,6 +10,6 @@ data class Task(
     val title: String = "",
     val description: String? = null,
     val dueDate: Timestamp = Timestamp.now(),
-    val timeSpentInMinutes: Int = 20,
+    val timeSpentInMinutes: Int = 0,
     val completed: Boolean = false,
 ) : Parcelable

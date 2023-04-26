@@ -1,10 +1,14 @@
 package com.pico.make_it_so.presentation.home.focus_session.time_picker.session
 
+import com.pico.make_it_so.domain.model.Task
+
 data class FocusSessionUiState(
-    val sessionTimeMinutes: Int = 0,
+    val totalSessionTimeMinutes: Int = 0,
+    val timeSpentSeconds: Int = 0,
+    val task: Task? = null,
     val sessionState: SessionState = SessionState.Idle,
     val remainingTime: Long = 0,
-    val remainingTimePercentage: Int = 0,
+    val remainingTimePercentage: Int = 100,
     val isPaused: Boolean = true
 )
 

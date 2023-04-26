@@ -74,9 +74,6 @@ fun TaskDetailsScreen(
                     }
                 }
             }
-            Button(onClick = { /*TODO*/ }) {
-                Text(text = "Select for Focus Session")
-            }
         }
     }
 }

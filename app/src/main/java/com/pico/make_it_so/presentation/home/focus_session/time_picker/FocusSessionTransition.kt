@@ -3,6 +3,7 @@ package com.pico.make_it_so.presentation.home.focus_session.time_picker
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.navigation.NavBackStackEntry
+import com.pico.make_it_so.core.TRANSITION_TIME_MILLIS
 import com.pico.make_it_so.presentation.appDestination
 import com.pico.make_it_so.presentation.destinations.HomeScreenDestination
 import com.pico.make_it_so.presentation.destinations.SettingsScreenDestination
@@ -14,13 +15,15 @@ object FocusSessionTransition: DestinationStyle.Animated {
         println(initialState.appDestination().route)
         return when(initialState.appDestination()){
             is HomeScreenDestination -> {
-                slideInHorizontally(initialOffsetX = {it}, animationSpec = tween(700))
+                slideInHorizontally(initialOffsetX = {it}, animationSpec = tween(
+                    TRANSITION_TIME_MILLIS
+                ))
             }
             is SettingsScreenDestination -> {
-                slideInHorizontally(initialOffsetX = {-it}, animationSpec = tween(700))
+                slideInHorizontally(initialOffsetX = {-it}, animationSpec = tween(TRANSITION_TIME_MILLIS))
             }
             else -> {
-                fadeIn(tween(700))
+                fadeIn(tween(TRANSITION_TIME_MILLIS))
             }
         }
     }

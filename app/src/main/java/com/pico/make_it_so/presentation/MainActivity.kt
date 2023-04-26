@@ -13,6 +13,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.pico.make_it_so.ui.theme.MakeItSoTheme
 import com.ramcosta.composedestinations.DestinationsNavHost
+import com.ramcosta.composedestinations.animations.defaults.RootNavGraphDefaultAnimations
 import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,7 +27,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MakeItSoTheme {
-                val animationEngine = rememberAnimatedNavHostEngine()
+                val animationEngine = rememberAnimatedNavHostEngine(
+                    rootDefaultAnimations = RootNavGraphDefaultAnimations.ACCOMPANIST_FADING
+                )
                 val navController = rememberAnimatedNavController()
                 val currentDestination by navController.appCurrentDestinationAsState()
                 Scaffold(

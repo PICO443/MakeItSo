@@ -51,7 +51,7 @@ fun TaskListItem(
                 if (task.timeSpentInMinutes > 0) {
                     CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant) {
                         Text(
-                            text = "Took ${task.timeSpentInMinutes} Min",
+                            text = "${task.timeSpentInMinutes} Min spent",
                             style = MaterialTheme.typography.labelMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )

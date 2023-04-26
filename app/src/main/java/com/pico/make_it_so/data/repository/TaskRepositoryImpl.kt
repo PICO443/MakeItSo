@@ -50,6 +50,7 @@ class TaskRepositoryImpl @Inject constructor(
                     Task::title.name to task.title,
                     Task::description.name to task.description,
                     Task::dueDate.name to task.dueDate,
+                    Task::timeSpentInMinutes.name to task.timeSpentInMinutes
                 )
             )
     }

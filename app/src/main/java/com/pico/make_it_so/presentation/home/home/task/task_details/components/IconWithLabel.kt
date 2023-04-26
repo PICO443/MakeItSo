@@ -27,6 +27,6 @@ fun IconWithLabel(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(painter = painterResource(id = icon), tint = color, contentDescription = null)
-        Text(text = label, style = MaterialTheme.typography.labelLarge)
+        Text(text = label, style = MaterialTheme.typography.labelMedium)
     }
 }

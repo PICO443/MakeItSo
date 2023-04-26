@@ -1,12 +1,17 @@
 package com.pico.make_it_so.presentation.home.home.task.add_edit_task
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.pico.make_it_so.R
@@ -31,6 +36,7 @@ fun AddEditScreen(
     navigator: DestinationsNavigator,
 ) {
     val uiState = viewModel.uiState
+    val focusManager = LocalFocusManager.current
 
     Scaffold(
         floatingActionButton = {
@@ -103,6 +109,10 @@ fun AddEditScreen(
                 singleLine = true,
                 isError = uiState.hasTaskTitleError,
                 supportingText = { if (uiState.hasTaskTitleError) Text(text = "Title can't be empty !") },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                keyboardActions = KeyboardActions(onNext = {
+                    focusManager.moveFocus(FocusDirection.Next)
+                }),
                 modifier = Modifier.fillMaxWidth()
             )
             TextField(
@@ -111,6 +121,10 @@ fun AddEditScreen(
                 onValueChange = {
                     viewModel.onEvent(AddEditTaskEvent.OnDescriptionChange(it))
                 },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                keyboardActions = KeyboardActions(onNext = {
+                    openDatePicker = true
+                }),
                 modifier = Modifier.fillMaxWidth()
             )
             IconButtonOption(

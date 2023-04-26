@@ -21,7 +21,6 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @HomeNavGraph
 @Destination(style = SettingsTransition::class)
 @Composable
